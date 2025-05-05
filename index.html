@@ -35,7 +35,7 @@
         .progress-container {
             position: relative;
             width: 100%;
-            height: 1.5rem;
+            height: 0.5rem;
             background-color: #e5e7eb;
             border-radius: 0.25rem;
             overflow: hidden;
@@ -43,7 +43,7 @@
 
         .progress-bar {
             height: 100%;
-            background-color: #f59e0b;
+            background-color: #3b82f6;
             transition: width 0.3s ease;
             position: relative;
         }
@@ -63,6 +63,7 @@
             color: #1f2937;
             font-size: 0.875rem;
             line-height: 1.5rem;
+            top: -1.5rem;
         }
     </style>
 </head>
@@ -125,12 +126,18 @@
         }
 
         function notificationInProgress() {
-            $('#notificationInProgressToast').toast('show');
+            $('#notificationInProgressToast').removeClass('hidden');
+            setTimeout(() => {
+                $('#notificationInProgressToast').addClass('hidden');
+            }, 5000);
         }
 
         function resetCache() {
             external.invoke('reset_cache');
-            $('#cacheResetToast').toast('show');
+            $('#cacheResetToast').removeClass('hidden');
+            setTimeout(() => {
+                $('#cacheResetToast').addClass('hidden');
+            }, 5000);
         }
 
         // Note: Function taken from https://stackoverflow.com/a/20732091
@@ -141,49 +148,46 @@
     </script>
 
     <!-- Top Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark noselect">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <nav class="bg-gray-800 text-white p-4 noselect">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="relative group">
+                    <button class="text-white hover:text-gray-300 px-3 py-2 rounded-md">
                         More
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#" onclick="external.invoke('cancel_update')"><i
-                                class="bi bi-x"></i> Cancelar Atualizacao</a>
-
-                        <a class="dropdown-item" href="#" onclick="external.invoke('start_update')"><i
-                                class="bi bi-arrow-repeat"></i> Retry</a>
-
-                        <a class="dropdown-item" href="#" onclick="external.invoke('manual_patch')"><i
-                                class="bi bi-box-arrow-up"></i> Manual patch</a>
-
-                        <a class="dropdown-item" href="#" onclick="resetCache()"><i
-                                class="bi bi-arrow-counterclockwise"></i> Reset cache</a>
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-gray-800 rounded-md shadow-lg z-10">
+                        <a href="#" onclick="external.invoke('cancel_update')" class="block px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            <i class="bi bi-x"></i> Cancel update
+                        </a>
+                        <a href="#" onclick="external.invoke('start_update')" class="block px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            <i class="bi bi-arrow-repeat"></i> Retry
+                        </a>
+                        <a href="#" onclick="external.invoke('manual_patch')" class="block px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            <i class="bi bi-box-arrow-up"></i> Manual patch
+                        </a>
+                        <a href="#" onclick="resetCache()" class="block px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset cache
+                        </a>
                     </div>
-                </li>
-            </ul>
-        </div>
-        <div class="mx-auto order-0">
-            <a class="navbar-brand mx-auto" href="#">SoulsRO</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <div class="btn-group shadow-sm" role="group">
-                        <button type="button" class="btn btn-success" id="button-play" onclick="external.invoke('play')"
-                            disabled>Play</button>
-                        <button type="button" class="btn btn-primary" id="button-setup"
-                            onclick="external.invoke('setup')">Setup</button>
-                        <button button type="button" class="btn btn-danger" id="button-exit"
-                            onclick="external.invoke('exit')">Exit</button>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </div>
+            
+            <div class="text-xl font-bold">RPatchur</div>
+            
+            <div class="flex items-center space-x-2">
+                <button id="button-play" onclick="external.invoke('play')" disabled
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed">
+                    Play
+                </button>
+                <button id="button-setup" onclick="external.invoke('setup')"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+                    Setup
+                </button>
+                <button id="button-exit" onclick="external.invoke('exit')"
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
+                    Exit
+                </button>
+            </div>
         </div>
     </nav>
     <!-- Progress Bar -->
@@ -239,34 +243,37 @@
     </div>
 
     <!-- Toasts -->
-    <div aria-live="polite" aria-atomic="true" style="position: relative">
-        <div style="position: absolute; bottom: 0px; right: 20px;">
-            <!-- Toast cache reset -->
-            <div class="toast noselect p-1" id="cacheResetToast" data-delay="5000">
-                <div class="toast-header bg-success text-white">
-                    <strong class="mr-auto"><i class="bi bi-exclamation-circle-fill"></i> Success</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div aria-live="polite" aria-atomic="true" class="fixed bottom-0 right-0 p-4">
+        <!-- Toast cache reset -->
+        <div class="hidden bg-green-500 text-white rounded-lg shadow-lg p-4 mb-4" id="cacheResetToast">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="bi bi-exclamation-circle-fill mr-2"></i>
+                    <span class="font-bold">Success</span>
                 </div>
-                <div class="toast-body">
-                    <div>
-                        Update cache has been cleared!<br />
-                        You can now restart the patcher to update.
-                    </div>
-                </div>
+                <button class="text-white hover:text-gray-200" onclick="$(this).parent().parent().addClass('hidden')">
+                    <i class="bi bi-x"></i>
+                </button>
             </div>
-            <!-- Toast update in progress -->
-            <div class="toast noselect p-1" id="notificationInProgressToast" data-delay="5000">
-                <div class="toast-header bg-warning text-white">
-                    <strong class="mr-auto"><i class="bi bi-exclamation-triangle-fill"></i> Warning</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="mt-2">
+                Update cache has been cleared!<br />
+                You can now restart the patcher to update.
+            </div>
+        </div>
+        
+        <!-- Toast update in progress -->
+        <div class="hidden bg-yellow-500 text-white rounded-lg shadow-lg p-4 mb-4" id="notificationInProgressToast">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                    <span class="font-bold">Warning</span>
                 </div>
-                <div class="toast-body">
-                    <div>Patching is already in progress!</div>
-                </div>
+                <button class="text-white hover:text-gray-200" onclick="$(this).parent().parent().addClass('hidden')">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            <div class="mt-2">
+                Patching is already in progress!
             </div>
         </div>
     </div>
