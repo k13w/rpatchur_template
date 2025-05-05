@@ -66,3 +66,19 @@ function humanFileSize(size) {
     var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
     return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kiB', 'MiB', 'GiB', 'TiB'][i];
 }
+
+function startGame() {
+    var login = document.getElementById('login').value;
+    var password = document.getElementById('password').value;
+    if (login == "" || password == "") {
+        return false;
+    }
+    // Invoke the patcher's 'login' function
+    external.invoke(JSON.stringify({
+        function: 'login',
+        parameters: {
+            'login': login, 'password': password
+        }
+    }));
+    return true;
+}
