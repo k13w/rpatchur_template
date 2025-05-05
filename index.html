@@ -48,6 +48,10 @@
             position: relative;
         }
 
+        .progress-bar.warning {
+            background-color: #f59e0b;
+        }
+
         .progress-bar.success {
             background-color: #10b981;
         }
@@ -77,8 +81,8 @@
         function patchingStatusReady() {
             $("#download-progress-bar")
                 .css("width", "100%")
-                .removeClass("bg-warning")
-                .removeClass("bg-danger")
+                .removeClass("warning")
+                .removeClass("error")
                 .addClass("success");
             $("#download-progress-text").text("Ready");
             $("#button-play").prop('disabled', false);
@@ -88,7 +92,7 @@
             $("#download-progress-bar")
                 .css("width", "100%")
                 .removeClass("success")
-                .removeClass("bg-warning")
+                .removeClass("warning")
                 .addClass("error");
             $("#download-progress-text").text("Failure: " + errorMsg);
         }
@@ -100,26 +104,28 @@
             } else {
                 var downloadSpeed = "";
             }
-            $("#download-progress-bar").css("width", percentage + "%")
+            $("#download-progress-bar")
+                .css("width", percentage + "%")
                 .removeClass("success")
                 .removeClass("error")
-                .addClass("bg-warning");
+                .addClass("warning");
             $("#download-progress-text").text("Downloading: " + nbDownloaded + "/" + nbTotal + downloadSpeed);
         }
 
         function patchingStatusInstalling(nbInstalled, nbTotal) {
             var percentage = (100 * nbInstalled) / nbTotal;
-            $("#download-progress-bar").css("width", percentage + "%")
+            $("#download-progress-bar")
+                .css("width", percentage + "%")
                 .removeClass("success")
                 .removeClass("error")
-                .addClass("bg-warning");
+                .addClass("warning");
             $("#download-progress-text").text("Installing: " + nbInstalled + "/" + nbTotal);
         }
 
         function patchingStatusPatchApplied(fileName) {
             $("#download-progress-bar")
                 .css("width", "100%")
-                .removeClass("bg-warning")
+                .removeClass("warning")
                 .removeClass("error")
                 .addClass("success");
             $("#download-progress-text").text("Successfully applied patch: " + fileName);
