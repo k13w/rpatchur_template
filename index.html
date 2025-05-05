@@ -9,24 +9,35 @@
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <style>
         /* Disable text selection */
         .noselect {
             -webkit-touch-callout: none;
+            /* iOS Safari */
             -webkit-user-select: none;
+            /* Safari */
             -khtml-user-select: none;
+            /* Konqueror HTML */
             -moz-user-select: none;
+            /* Firefox */
             -ms-user-select: none;
+            /* Internet Explorer/Edge */
             user-select: none;
+            /* Non-prefixed version, currently supported by Chrome and Opera */
         }
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body>
     <!-- Patcher status callbacks -->
     <script type="text/javascript">
         $(document).ready(function () {
@@ -36,9 +47,9 @@
             $("#download-progress-bar")
                 .css("width", "100%")
                 .attr("aria-valuenow", "100")
-                .removeClass("bg-yellow-500")
-                .removeClass("bg-red-500")
-                .addClass("bg-green-500");
+                .removeClass("bg-warning")
+                .removeClass("bg-danger")
+                .addClass("bg-success");
             $("#download-progress-text").text("Ready");
             $("#button-play").prop('disabled', false);
         }
@@ -47,9 +58,9 @@
             $("#download-progress-bar")
                 .css("width", "100%")
                 .attr("aria-valuenow", "100")
-                .removeClass("bg-green-500")
-                .removeClass("bg-yellow-500")
-                .addClass("bg-red-500");
+                .removeClass("bg-success")
+                .removeClass("bg-warning")
+                .addClass("bg-danger");
             $("#download-progress-text").text("Failure: " + errorMsg);
         }
 
@@ -61,18 +72,18 @@
                 var downloadSpeed = "";
             }
             $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
-                .removeClass("bg-green-500")
-                .removeClass("bg-red-500")
-                .addClass("bg-yellow-500");
+                .removeClass("bg-success")
+                .removeClass("bg-danger")
+                .addClass("bg-warning");
             $("#download-progress-text").text("Downloading: " + nbDownloaded + "/" + nbTotal + downloadSpeed);
         }
 
         function patchingStatusInstalling(nbInstalled, nbTotal) {
             var percentage = (100 * nbInstalled) / nbTotal;
             $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
-                .removeClass("bg-green-500")
-                .removeClass("bg-red-500")
-                .addClass("bg-yellow-500");
+                .removeClass("bg-success")
+                .removeClass("bg-danger")
+                .addClass("bg-warning");
             $("#download-progress-text").text("Installing: " + nbInstalled + "/" + nbTotal);
         }
 
@@ -80,27 +91,22 @@
             $("#download-progress-bar")
                 .css("width", "100%")
                 .attr("aria-valuenow", "100")
-                .removeClass("bg-yellow-500")
-                .removeClass("bg-red-500")
-                .addClass("bg-green-500");
+                .removeClass("bg-warning")
+                .removeClass("bg-danger")
+                .addClass("bg-success");
             $("#download-progress-text").text("Successfully applied patch: " + fileName);
         }
 
         function notificationInProgress() {
-            $('#notificationInProgressToast').removeClass('hidden');
-            setTimeout(() => {
-                $('#notificationInProgressToast').addClass('hidden');
-            }, 5000);
+            $('#notificationInProgressToast').toast('show');
         }
 
         function resetCache() {
             external.invoke('reset_cache');
-            $('#cacheResetToast').removeClass('hidden');
-            setTimeout(() => {
-                $('#cacheResetToast').addClass('hidden');
-            }, 5000);
+            $('#cacheResetToast').toast('show');
         }
 
+        // Note: Function taken from https://stackoverflow.com/a/20732091
         function humanFileSize(size) {
             var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
             return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kiB', 'MiB', 'GiB', 'TiB'][i];
@@ -108,121 +114,132 @@
     </script>
 
     <!-- Top Navbar -->
-    <nav class="bg-gray-800 text-white p-4 noselect">
-        <div class="container mx-auto flex items-center justify-between">
-            <div class="flex items-center">
-                <div class="relative group">
-                    <button class="text-white hover:text-gray-300 px-3 py-2">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark noselect">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         More
-                    </button>
-                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden group-hover:block">
-                        <div class="py-1">
-                            <a href="#" onclick="external.invoke('cancel_update')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cancel update</a>
-                            <a href="#" onclick="external.invoke('start_update')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Retry</a>
-                            <a href="#" onclick="external.invoke('manual_patch')" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Manual patch</a>
-                            <a href="#" onclick="resetCache()" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Reset cache</a>
-                        </div>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" onclick="external.invoke('cancel_update')"><i
+                                class="bi bi-x"></i> Cancel update</a>
+
+                        <a class="dropdown-item" href="#" onclick="external.invoke('start_update')"><i
+                                class="bi bi-arrow-repeat"></i> Retry</a>
+
+                        <a class="dropdown-item" href="#" onclick="external.invoke('manual_patch')"><i
+                                class="bi bi-box-arrow-up"></i> Manual patch</a>
+
+                        <a class="dropdown-item" href="#" onclick="resetCache()"><i
+                                class="bi bi-arrow-counterclockwise"></i> Reset cache</a>
                     </div>
-                </div>
-            </div>
-            <div class="text-xl font-bold">RPatchur</div>
-            <div class="flex space-x-2">
-                <button id="button-play" onclick="external.invoke('play')" disabled class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50">Play</button>
-                <button id="button-setup" onclick="external.invoke('setup')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Setup</button>
-                <button id="button-exit" onclick="external.invoke('exit')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Exit</button>
-            </div>
+                </li>
+            </ul>
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto" href="#">RPatchur</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <div class="btn-group shadow-sm" role="group">
+                        <button type="button" class="btn btn-success" id="button-play" onclick="external.invoke('play')"
+                            disabled>Play</button>
+                        <button type="button" class="btn btn-primary" id="button-setup"
+                            onclick="external.invoke('setup')">Setup</button>
+                        <button button type="button" class="btn btn-danger" id="button-exit"
+                            onclick="external.invoke('exit')">Exit</button>
+                    </div>
+                </li>
+            </ul>
         </div>
     </nav>
-
-    <div class="w-full h-4 bg-gray-200 rounded-none shadow-sm noselect">
-        <div id="download-progress-bar" class="h-full bg-yellow-500 transition-all duration-300" style="width: 0%">
-            <div class="text-center text-sm text-gray-800" id="download-progress-text">Starting...</div>
-        </div>
+    <div class="progress position-relative rounded-0 shadow-sm noselect" id="download-progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" id="download-progress-bar"
+            role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><small
+                class="justify-content-center d-flex position-absolute w-100 text-dark"
+                id="download-progress-text">Starting...</small></div>
     </div>
 
-    <div class="container mx-auto p-4 noselect">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="container-fluid mt-3 mb-3 noselect">
+        <div class="card-group shadow-sm">
             <!-- Card #1 -->
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="images/card1.png" class="w-full h-48 object-cover" alt="...">
-                <div class="p-4">
-                    <h5 class="text-lg font-bold mb-2">Patch Notes for 22 October 2019</h5>
-                    <p class="text-gray-600">Here are some of the changes and updates after the server maintenance.</p>
+            <div class="card">
+                <img src="images/card1.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Patch Notes for 22 October 2019</h5>
+                    <p class="card-text">Here are some of the changes and updates
+                        after the server maintenance.</p>
                 </div>
-                <div class="px-4 py-2 bg-gray-50">
-                    <small class="text-gray-500">2019-10-19 11:29:31</small>
+                <div class="card-footer">
+                    <small class="text-muted">2019-10-19 11:29:31</small>
                 </div>
             </div>
 
             <!-- Card #2 -->
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="images/card2.png" class="w-full h-48 object-cover" alt="...">
-                <div class="p-4">
-                    <h5 class="text-lg font-bold mb-2">Player Ban List for 28 November 2019</h5>
-                    <p class="text-gray-600">To mitigate the appearance of bots in our community which affects gameplay, trades, and competition, we are reinforcing heightened security to ensure protection in the lands of Valhalla.</p>
+            <div class="card">
+                <img src="images/card2.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Player Ban List for 28 November 2019</h5>
+                    <p class="card-text">To mitigate the appearance of bots in our community
+                        which affects gameplay, trades, and competition,
+                        we are reinforcing heightened security to ensure protection
+                        in the lands of Valhalla.</p>
                 </div>
-                <div class="px-4 py-2 bg-gray-50">
-                    <small class="text-gray-500">2019-11-29 09:09:01</small>
+                <div class="card-footer">
+                    <small class="text-muted">2019-11-29 09:09:01</small>
                 </div>
             </div>
 
             <!-- Card #3 -->
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="images/card3.jpg" class="w-full h-48 object-cover" alt="...">
-                <div class="p-4">
-                    <h5 class="text-lg font-bold mb-2">Christmas Invasion - The Nightmare Before Christmas</h5>
-                    <p class="text-gray-600">Cloaked in darkness, a mysterious figure has appeared to terrorize the holidays.</p>
+            <div class="card">
+                <img src="images/card3.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Christmas Invasion - The Nightmare Before Christmas</h5>
+                    <p class="card-text">Cloaked in darkness, a mysterious figure has appeared
+                        to terrorize the holidays.</p>
                 </div>
-                <div class="px-4 py-2 bg-gray-50">
-                    <small class="text-gray-500">2019-12-06 06:37:59</small>
+                <div class="card-footer">
+                    <small class="text-muted">2019-12-06 06:37:59</small>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Toasts -->
-    <div class="fixed bottom-4 right-4 space-y-2">
-        <!-- Toast cache reset -->
-        <div id="cacheResetToast" class="hidden bg-white rounded-lg shadow-lg p-4 max-w-sm">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-900">Success</p>
-                        <p class="text-sm text-gray-500">Update cache has been cleared!<br />You can now restart the patcher to update.</p>
+    <div aria-live="polite" aria-atomic="true" style="position: relative">
+        <div style="position: absolute; bottom: 0px; right: 20px;">
+            <!-- Toast cache reset -->
+            <div class="toast noselect p-1" id="cacheResetToast" data-delay="5000">
+                <div class="toast-header bg-success text-white">
+                    <strong class="mr-auto"><i class="bi bi-exclamation-circle-fill"></i> Success</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    <div>
+                        Update cache has been cleared!<br />
+                        You can now restart the patcher to update.
                     </div>
                 </div>
-                <button onclick="$(this).parent().addClass('hidden')" class="ml-4 text-gray-400 hover:text-gray-500">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
             </div>
-        </div>
-
-        <!-- Toast update in progress -->
-        <div id="notificationInProgressToast" class="hidden bg-white rounded-lg shadow-lg p-4 max-w-sm">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-900">Warning</p>
-                        <p class="text-sm text-gray-500">Patching is already in progress!</p>
-                    </div>
+            <!-- Toast update in progress -->
+            <div class="toast noselect p-1" id="notificationInProgressToast" data-delay="5000">
+                <div class="toast-header bg-warning text-white">
+                    <strong class="mr-auto"><i class="bi bi-exclamation-triangle-fill"></i> Warning</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <button onclick="$(this).parent().parent().addClass('hidden')" class="ml-4 text-gray-400 hover:text-gray-500">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
+                <div class="toast-body">
+                    <div>Patching is already in progress!</div>
+                </div>
             </div>
         </div>
     </div>
