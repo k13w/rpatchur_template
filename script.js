@@ -1,4 +1,3 @@
-// Patcher status callbacks
 $(document).ready(function () {
     external.invoke('start_update');
 });
