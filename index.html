@@ -6,53 +6,39 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/progress.min.js"></script>
+    <script src="script.js" defer></script>
 </head>
 
-
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<body class="bg-gray-100">
     <!-- Login Form -->
-    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-        <div class="space-y-4">
-            <div class="space-y-1">
+    <div class="max-w-md mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
+        <h2 class="text-2xl font-semibold text-center text-gray-700">Login</h2>
+        <div class="mt-6">
+            <div class="mb-4">
                 <label for="login" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" placeholder="Username" id="login" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="text" id="login" placeholder="Username" class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
             </div>
-            <div class="space-y-1">
+            <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" placeholder="Password" id="password" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="password" id="password" placeholder="Password" class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
             </div>
-            <button class="w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" onclick="startGame()">Login</button>
+            <button class="w-full py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none" onclick="startGame()">Login</button>
         </div>
     </div>
 
     <!-- Progress Bar Wrapper -->
-    <div id="download-progress-wrapper" class="w-96 mt-6">
-        <div class="relative pt-1">
-            <div class="flex mb-2 items-center justify-between">
-                <div>
-                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200">
-                        Progress
-                    </span>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200">
-                        <span id="download-progress-text">Starting...</span>
-                    </span>
-                </div>
-            </div>
-            <div class="flex mb-2 items-center justify-between">
-                <div class="relative pt-1">
-                    <div class="flex mb-2">
-                        <div class="w-full bg-gray-200 rounded-full">
-                            <div class="progress-bar bg-orange-500 h-2 rounded-full" id="download-progress-bar" style="width: 0%" data-value="0"></div>
-                        </div>
-                    </div>
-                </div>
+    <div id="download-progress-wrapper" class="max-w-md mx-auto mt-10">
+        <div class="ui orange progress" id="download-progress">
+            <div class="bar" id="download-progress-bar" style="width: 0%" data-value="0">
+                <div class="label" id="download-progress-text">Starting...</div>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
