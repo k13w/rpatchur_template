@@ -15,26 +15,6 @@
 </head>
 
 <body>
-    <!-- Top Navbar -->
-    <div class="ui inverted menu noselect">
-        <a class="item" href="#">RPatchur</a>
-        <div class="right menu">
-            <div class="ui simple dropdown item">
-                More
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a class="item" href="#" onclick="external.invoke('cancel_update')"><i class="close icon"></i> Cancel update</a>
-                    <a class="item" href="#" onclick="external.invoke('start_update')"><i class="refresh icon"></i> Retry</a>
-                    <a class="item" href="#" onclick="external.invoke('manual_patch')"><i class="upload icon"></i> Manual patch</a>
-                    <a class="item" href="#" onclick="resetCache()"><i class="undo icon"></i> Reset cache</a>
-                </div>
-            </div>
-            <div class="ui button green" id="button-play" onclick="external.invoke('play')" disabled>Play</div>
-            <div class="ui button primary" id="button-setup" onclick="external.invoke('setup')">Setup</div>
-            <div class="ui button red" id="button-exit" onclick="external.invoke('exit')">Exit</div>
-        </div>
-    </div>
-
     <!-- Login Form -->
     <div class="login-form">
         <h2 class="ui header">Login</h2>
