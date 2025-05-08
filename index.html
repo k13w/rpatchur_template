@@ -25,6 +25,13 @@
             user-select: none;
             /* Non-prefixed version, currently supported by Chrome and Opera */
         }
+
+        body {
+        background-image: url('bg.jpg');
+        background-size: cover; /* Faz a imagem cobrir toda a tela */
+        background-position: center; /* Centraliza a imagem */
+        background-repeat: no-repeat; /* Impede a repetição da imagem */
+    }
     </style>
 </head>
 
@@ -130,59 +137,6 @@
     <div class="ui teal progress" id="download-progress">
         <div class="bar" id="download-progress-bar" style="width: 0%" data-value="0"></div>
         <div class="label" id="download-progress-text">Starting...</div>
-    </div>
-
-    <div class="ui container mt-3 mb-3 noselect">
-        <div class="ui three stackable cards">
-            <!-- Card #1 -->
-            <div class="card">
-                <div class="image">
-                    <img src="images/card1.png" alt="...">
-                </div>
-                <div class="content">
-                    <div class="header">Patch Notes for 22 October 2019</div>
-                    <div class="description">
-                        Here are some of the changes and updates after the server maintenance.
-                    </div>
-                </div>
-                <div class="extra content">
-                    <span class="right floated"><i class="clock icon"></i> 2019-10-19 11:29:31</span>
-                </div>
-            </div>
-
-            <!-- Card #2 -->
-            <div class="card">
-                <div class="image">
-                    <img src="images/card2.png" alt="...">
-                </div>
-                <div class="content">
-                    <div class="header">Player Ban List for 28 November 2019</div>
-                    <div class="description">
-                        To mitigate the appearance of bots in our community which affects gameplay, trades, and competition,
-                        we are reinforcing heightened security to ensure protection in the lands of Valhalla.
-                    </div>
-                </div>
-                <div class="extra content">
-                    <span class="right floated"><i class="clock icon"></i> 2019-11-29 09:09:01</span>
-                </div>
-            </div>
-
-            <!-- Card #3 -->
-            <div class="card">
-                <div class="image">
-                    <img src="images/card3.jpg" alt="...">
-                </div>
-                <div class="content">
-                    <div class="header">Christmas Invasion - The Nightmare Before Christmas</div>
-                    <div class="description">
-                        Cloaked in darkness, a mysterious figure has appeared to terrorize the holidays.
-                    </div>
-                </div>
-                <div class="extra content">
-                    <span class="right floated"><i class="clock icon"></i> 2019-12-06 06:37:59</span>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Toasts -->
