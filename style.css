@@ -5,15 +5,25 @@
     right: 0;
     margin: 0;
     padding: 10px;
-    z-index: 9999; /* Garante que a progress bar ficará sobre outros elementos */
+    z-index: 9999;
+}
+
+.ui.active.teal.progress {
+    height: 5px; /* Ajusta a altura da barra de progresso */
+    width: 100%; /* Garante que a largura seja 100% */
+}
+
+#download-progress-bar {
+    height: 100%; /* Garante que a barra ocupe toda a altura da progress bar */
+    width: 0%; /* Inicialmente a barra estará vazia */
 }
 
 body {
     background-image: url('bg2.jpg');
     background-size: cover;
-    background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
+    background-position: 10% 90%;
     background-repeat: no-repeat;
-    padding-bottom: 60px; /* Espaço para o progress bar */
+    padding-bottom: 60px; /* Espaço para a progress bar */
 }
 
 .login-form {
