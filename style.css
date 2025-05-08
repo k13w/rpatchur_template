@@ -38,14 +38,3 @@
         }
 
         /* Move o progress bar para a parte inferior */
-        #download-progress-wrapper {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 10px;
-            z-index: 999;
-        }
-
-        #download-progress-bar {
-            transition: width 0.3s ease-in-out;
-        }
