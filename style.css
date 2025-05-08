@@ -25,6 +25,7 @@
         .login-form {
             width: 400px;
             margin: 50px auto;
+            margin-top: 20%;
             padding: 20px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
