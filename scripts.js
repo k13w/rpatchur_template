@@ -1,3 +1,4 @@
+// Patcher status callbacks
 $(document).ready(function () {
     external.invoke('start_update');
 });
@@ -25,7 +26,11 @@ function patchingStatusError(errorMsg) {
 
 function patchingStatusDownloading(nbDownloaded, nbTotal, bytesPerSec) {
     var percentage = (100 * nbDownloaded) / nbTotal;
-    var downloadSpeed = bytesPerSec > 0 ? " - " + humanFileSize(bytesPerSec) + "/s" : "";
+    if (bytesPerSec > 0) {
+        var downloadSpeed = " - " + humanFileSize(bytesPerSec) + "/s";
+    } else {
+        var downloadSpeed = "";
+    }
     $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
         .removeClass("bg-success")
         .removeClass("bg-danger")

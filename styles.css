@@ -1,16 +1,46 @@
+/* Disable text selection */
 .noselect {
     -webkit-touch-callout: none;
+    /* iOS Safari */
     -webkit-user-select: none;
+    /* Safari */
     -khtml-user-select: none;
+    /* Konqueror HTML */
     -moz-user-select: none;
+    /* Firefox */
     -ms-user-select: none;
+    /* Internet Explorer/Edge */
     user-select: none;
+    /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
-/* Add background image */
 body {
-    background-image: url('bg.jpg'); /* Replace with your image path */
-    background-size: cover; /* Ensures the image covers the entire background */
-    background-position: center; /* Centers the background image */
-    background-attachment: fixed; /* Keeps the image fixed when scrolling */
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
+    background-repeat: no-repeat;
+    padding-bottom: 60px; /* Espaço para o progress bar */
+}
+
+.login-form {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+.login-form .ui.input,
+.login-form .ui.button {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Move o progress bar para a parte inferior */
+#download-progress-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    z-index: 999;
 }
