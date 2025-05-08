@@ -17,12 +17,6 @@
 
 
 <body>
-
-    <div class="ui active progress striped">
-        <div class="bar" style="width: 50%;">50%</div>
-    </div>
-
-    
     <!-- Login Form -->
     <div class="login-form">
         <h2 class="ui header">Login</h2>
@@ -35,16 +29,14 @@
                 <label>Password</label>
                 <input type="password" placeholder="Password" id="password" required="required">
             </div>
-            <button class="ui button green" onclick="startGame()">Login</button>
+            <button class="ui button teal" onclick="startGame()">Login</button>
         </div>
     </div>
 
     <div id="download-progress-wrapper" style="margin-top: 20px;">
-    <div class="ui active progress striped">
-        <div class="bar" id="download-progress-bar" style="width: 0%" data-value="0">
-            <div class="label" id="download-progress-text">0%</div>
+        <div class="ui active teal progress striped">
+            <div class="bar" id="download-progress-bar" data-value="0" />
         </div>
-    </div>
     </div>
     
 </body>

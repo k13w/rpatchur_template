@@ -15,7 +15,7 @@
         }
 
         body {
-            background-image: url('bg.jpg');
+            background-image: url('bg2.jpg');
             background-size: cover;
             background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
             background-repeat: no-repeat;
