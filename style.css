@@ -1,40 +1,32 @@
-        /* Disable text selection */
-        .noselect {
-            -webkit-touch-callout: none;
-            /* iOS Safari */
-            -webkit-user-select: none;
-            /* Safari */
-            -khtml-user-select: none;
-            /* Konqueror HTML */
-            -moz-user-select: none;
-            /* Firefox */
-            -ms-user-select: none;
-            /* Internet Explorer/Edge */
-            user-select: none;
-            /* Non-prefixed version, currently supported by Chrome and Opera */
-        }
+#download-progress-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 10px;
+    z-index: 9999; /* Garante que a progress bar ficará sobre outros elementos */
+}
 
-        body {
-            background-image: url('bg2.jpg');
-            background-size: cover;
-            background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
-            background-repeat: no-repeat;
-            padding-bottom: 60px; /* Espaço para o progress bar */
-        }
+body {
+    background-image: url('bg2.jpg');
+    background-size: cover;
+    background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
+    background-repeat: no-repeat;
+    padding-bottom: 60px; /* Espaço para o progress bar */
+}
 
-        .login-form {
-            width: 400px;
-            margin: 50px auto;
-            margin-top: 20%;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 8px;
-        }
+.login-form {
+    width: 400px;
+    margin: 50px auto;
+    margin-top: 20%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+}
 
-        .login-form .ui.input,
-        .login-form .ui.button {
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        /* Move o progress bar para a parte inferior */
+.login-form .ui.input,
+.login-form .ui.button {
+    width: 100%;
+    margin-bottom: 15px;
+}
