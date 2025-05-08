@@ -65,6 +65,15 @@ function resetCache() {
     $('#cacheResetToast').toast('show');
 }
 
+function updateProgressBar(value) {
+    const progressBar = document.getElementById('download-progress-bar');
+    const progressText = document.getElementById('download-progress-text');
+    
+    progressBar.style.width = value + '%';
+    progressText.innerText = value + '%';
+}
+
+
 // Note: Function taken from https://stackoverflow.com/a/20732091
 function humanFileSize(size) {
     var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
