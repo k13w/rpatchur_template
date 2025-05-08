@@ -27,91 +27,131 @@
         }
 
         body {
-        background-image: url('bg.jpg');
-        background-size: cover; /* Faz a imagem cobrir toda a tela */
-        background-position: center; /* Centraliza a imagem */
-        background-repeat: no-repeat; /* Impede a repetição da imagem */
-    }
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: 10% 90%; /* Move a imagem para a esquerda e mantém o centro vertical */
+            background-repeat: no-repeat;
+            padding-bottom: 60px; /* Espaço para o progress bar */
+        }
+
+        .login-form {
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+        }
+
+        .login-form .ui.input,
+        .login-form .ui.button {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        /* Move o progress bar para a parte inferior */
+        #download-progress-wrapper {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+            z-index: 999;
+        }
     </style>
 </head>
 
 <body>
 
-        <!-- Patcher status callbacks -->
-        <script type="text/javascript">
-            $(document).ready(function () {
-                external.invoke('start_update');
-            });
-            function patchingStatusReady() {
-                $("#download-progress-bar")
-                    .css("width", "100%")
-                    .attr("aria-valuenow", "100")
-                    .removeClass("bg-warning")
-                    .removeClass("bg-danger")
-                    .addClass("bg-success");
-                $("#download-progress-text").text("Ready");
-                $("#button-play").prop('disabled', false);
+    <!-- Patcher status callbacks -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            external.invoke('start_update');
+        });
+
+        function patchingStatusReady() {
+            $("#download-progress-bar")
+                .css("width", "100%")
+                .attr("aria-valuenow", "100")
+                .removeClass("bg-warning")
+                .removeClass("bg-danger")
+                .addClass("bg-success");
+            $("#download-progress-text").text("Ready");
+            $("#button-play").prop('disabled', false);
+        }
+
+        function patchingStatusError(errorMsg) {
+            $("#download-progress-bar")
+                .css("width", "100%")
+                .attr("aria-valuenow", "100")
+                .removeClass("bg-success")
+                .removeClass("bg-warning")
+                .addClass("bg-danger");
+            $("#download-progress-text").text("Failure: " + errorMsg);
+        }
+
+        function patchingStatusDownloading(nbDownloaded, nbTotal, bytesPerSec) {
+            var percentage = (100 * nbDownloaded) / nbTotal;
+            if (bytesPerSec > 0) {
+                var downloadSpeed = " - " + humanFileSize(bytesPerSec) + "/s";
+            } else {
+                var downloadSpeed = "";
             }
-    
-            function patchingStatusError(errorMsg) {
-                $("#download-progress-bar")
-                    .css("width", "100%")
-                    .attr("aria-valuenow", "100")
-                    .removeClass("bg-success")
-                    .removeClass("bg-warning")
-                    .addClass("bg-danger");
-                $("#download-progress-text").text("Failure: " + errorMsg);
+            $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
+                .removeClass("bg-success")
+                .removeClass("bg-danger")
+                .addClass("bg-warning");
+            $("#download-progress-text").text("Downloading: " + nbDownloaded + "/" + nbTotal + downloadSpeed);
+        }
+
+        function patchingStatusInstalling(nbInstalled, nbTotal) {
+            var percentage = (100 * nbInstalled) / nbTotal;
+            $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
+                .removeClass("bg-success")
+                .removeClass("bg-danger")
+                .addClass("bg-warning");
+            $("#download-progress-text").text("Installing: " + nbInstalled + "/" + nbTotal);
+        }
+
+        function patchingStatusPatchApplied(fileName) {
+            $("#download-progress-bar")
+                .css("width", "100%")
+                .attr("aria-valuenow", "100")
+                .removeClass("bg-warning")
+                .removeClass("bg-danger")
+                .addClass("bg-success");
+            $("#download-progress-text").text("Successfully applied patch: " + fileName);
+        }
+
+        function notificationInProgress() {
+            $('#notificationInProgressToast').toast('show');
+        }
+
+        function resetCache() {
+            external.invoke('reset_cache');
+            $('#cacheResetToast').toast('show');
+        }
+
+        // Note: Function taken from https://stackoverflow.com/a/20732091
+        function humanFileSize(size) {
+            var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+            return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kiB', 'MiB', 'GiB', 'TiB'][i];
+        }
+
+        function startGame() {
+            var login = document.getElementById('login').value;
+            var password = document.getElementById('password').value;
+            if (login == "" || password == "") {
+                return false;
             }
-    
-            function patchingStatusDownloading(nbDownloaded, nbTotal, bytesPerSec) {
-                var percentage = (100 * nbDownloaded) / nbTotal;
-                if (bytesPerSec > 0) {
-                    var downloadSpeed = " - " + humanFileSize(bytesPerSec) + "/s";
-                } else {
-                    var downloadSpeed = "";
+            // Invoke the patcher's 'login' function
+            external.invoke(JSON.stringify({
+                function: 'login',
+                parameters: {
+                    'login': login, 'password': password
                 }
-                $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
-                    .removeClass("bg-success")
-                    .removeClass("bg-danger")
-                    .addClass("bg-warning");
-                $("#download-progress-text").text("Downloading: " + nbDownloaded + "/" + nbTotal + downloadSpeed);
-            }
-    
-            function patchingStatusInstalling(nbInstalled, nbTotal) {
-                var percentage = (100 * nbInstalled) / nbTotal;
-                $("#download-progress-bar").css("width", percentage + "%").attr("aria-valuenow", percentage)
-                    .removeClass("bg-success")
-                    .removeClass("bg-danger")
-                    .addClass("bg-warning");
-                $("#download-progress-text").text("Installing: " + nbInstalled + "/" + nbTotal);
-            }
-    
-            function patchingStatusPatchApplied(fileName) {
-                $("#download-progress-bar")
-                    .css("width", "100%")
-                    .attr("aria-valuenow", "100")
-                    .removeClass("bg-warning")
-                    .removeClass("bg-danger")
-                    .addClass("bg-success");
-                $("#download-progress-text").text("Successfully applied patch: " + fileName);
-            }
-    
-            function notificationInProgress() {
-                $('#notificationInProgressToast').toast('show');
-            }
-    
-            function resetCache() {
-                external.invoke('reset_cache');
-                $('#cacheResetToast').toast('show');
-            }
-    
-            // Note: Function taken from https://stackoverflow.com/a/20732091
-            function humanFileSize(size) {
-                var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
-                return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kiB', 'MiB', 'GiB', 'TiB'][i];
-            }
-        </script>
-    
+            }));
+            return true;
+        }
+    </script>
 
     <!-- Top Navbar -->
     <div class="ui inverted menu noselect">
@@ -133,10 +173,28 @@
         </div>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="ui teal progress" id="download-progress">
-        <div class="bar" id="download-progress-bar" style="width: 0%" data-value="0"></div>
-        <div class="label" id="download-progress-text">Starting...</div>
+    <!-- Login Form -->
+    <div class="login-form">
+        <h2 class="ui header">Login</h2>
+        <div class="ui form">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" placeholder="Username" id="login" required="required">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" placeholder="Password" id="password" required="required">
+            </div>
+            <button class="ui button green" onclick="startGame()">Login</button>
+        </div>
+    </div>
+
+    <!-- Progress Bar Wrapper -->
+    <div id="download-progress-wrapper">
+        <div class="ui teal progress" id="download-progress">
+            <div class="bar" id="download-progress-bar" style="width: 0%" data-value="0"></div>
+            <div class="label" id="download-progress-text">Starting...</div>
+        </div>
     </div>
 
     <!-- Toasts -->
@@ -153,7 +211,6 @@
             <p>Patching is already in progress!</p>
         </div>
     </div>
-
 </body>
 
 </html>
